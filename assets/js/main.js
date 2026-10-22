@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const result = await response.json().catch(() => ({}));
+        console.log("Resultado del registro:", result);
 
         if (response.ok && result.success) {
           if (statusBox) {

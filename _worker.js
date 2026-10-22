@@ -1,10 +1,6 @@
 /**
  * Minka Lab — Cloudflare Pages & Workers Entry Point (_worker.js)
  * 
- * Este archivo habilita el modo "Advanced Pages Worker" / "Worker con Assets",
- * eliminando la restricción de "solo activos estáticos" en Cloudflare y permitiendo
- * vincular la base de datos D1 y variables de entorno.
- * 
  * 1. Procesa POST /api/register para almacenar registros en D1 y enviar alertas.
  * 2. Para el resto de rutas, sirve los archivos estáticos mediante env.ASSETS.fetch().
  */
@@ -102,11 +98,18 @@ async function handleRegister(request, env) {
       console.warn("env.DB no está vinculado en Cloudflare.");
     }
 
-    // 4. Notificaciones en paralelo (Telegram / Resend Email / Cloudflare Email)
+    // 4. Diagnóstico y despacho de Notificaciones
+    const notificationResults = {
+      telegram: "not_configured",
+      resend: "not_configured",
+      cloudflare_email: "not_configured",
+    };
+
     const notificationPromises = [];
 
-    // 4.A Telegram Bot (Alerta inmediata al celular)
+    // 4.A Telegram Bot
     if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {
+      notificationResults.telegram = "pending";
       const telegramText =
         `🤝 *Nuevo Registro en Minka Lab*\n\n` +
         `👤 *Nombre:* ${escapeTelegramMarkdown(nombre)}\n` +
@@ -114,23 +117,45 @@ async function handleRegister(request, env) {
         `📍 *Ubicación:* ${escapeTelegramMarkdown(ubicacion || "No especificada")}\n` +
         `🎯 *Rol / Interés:* ${escapeTelegramMarkdown(rol || "No especificado")}\n` +
         `🕒 *Fecha:* ${escapeTelegramMarkdown(new Date().toLocaleString("es-BO", { timeZone: "America/La_Paz" }))}\n` +
-        `💾 *Guardado en D1:* ${dbSuccess ? "Sí" : (dbErrorMsg ? `Error (${escapeTelegramMarkdown(dbErrorMsg)})` : "Pendiente binding")}`;
+        `💾 *Guardado en D1:* ${dbSuccess ? "Sí" : "No"}`;
 
       notificationPromises.push(
-        fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: env.TELEGRAM_CHAT_ID,
-            text: telegramText,
-            parse_mode: "Markdown",
-          }),
-        }).catch((err) => console.error("Error al enviar notificación a Telegram:", err))
+        (async () => {
+          try {
+            const token = env.TELEGRAM_BOT_TOKEN.trim();
+            const chatId = env.TELEGRAM_CHAT_ID.trim();
+            const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                chat_id: chatId,
+                text: telegramText,
+                parse_mode: "Markdown",
+              }),
+            });
+            const resText = await res.text();
+            if (!res.ok) {
+              console.error(`Telegram Error (${res.status}):`, resText);
+              notificationResults.telegram = `error_${res.status}: ${resText}`;
+            } else {
+              console.log("Telegram enviado correctamente:", resText);
+              notificationResults.telegram = "sent";
+            }
+          } catch (telErr) {
+            console.error("Excepción al conectar con Telegram:", telErr);
+            notificationResults.telegram = `exception: ${telErr.message}`;
+          }
+        })()
       );
     }
 
-    // 4.B Notificación vía Resend API (si está configurada)
+    // 4.B Notificación vía Resend API
     if (env.RESEND_API_KEY) {
+      notificationResults.resend = "pending";
+      const apiKey = env.RESEND_API_KEY.trim();
+      const fromAddress = env.FROM_EMAIL ? env.FROM_EMAIL.trim() : "Minka Lab <notificaciones@minkalab.net>";
+      const toAddress = env.NOTIFY_EMAIL ? env.NOTIFY_EMAIL.trim() : "contact@minkalab.net";
+
       const emailHtml = `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; color: #212529; background-color: #f8f9fa;">
           <div style="background-color: #ffffff; padding: 24px; border-radius: 6px; border-left: 4px solid #C85A32; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
@@ -151,24 +176,43 @@ async function handleRegister(request, env) {
       `;
 
       notificationPromises.push(
-        fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${env.RESEND_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            from: env.FROM_EMAIL || "Minka Lab <notificaciones@minkalab.net>",
-            to: [env.NOTIFY_EMAIL || "contact@minkalab.net"],
-            subject: `[Minka Lab] Nuevo Registro: ${nombre} (${rol})`,
-            html: emailHtml,
-          }),
-        }).catch((err) => console.error("Error al enviar email vía Resend:", err))
+        (async () => {
+          try {
+            console.log(`Enviando email vía Resend desde "${fromAddress}" hacia "${toAddress}"...`);
+            const res = await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${apiKey}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                from: fromAddress,
+                to: [toAddress],
+                subject: `[Minka Lab] Nuevo Registro: ${nombre} (${rol})`,
+                html: emailHtml,
+              }),
+            });
+            const resBody = await res.text();
+            if (!res.ok) {
+              console.error(`Resend API Error (HTTP ${res.status}):`, resBody);
+              notificationResults.resend = `error_${res.status}: ${resBody}`;
+            } else {
+              console.log("Resend API éxito:", resBody);
+              notificationResults.resend = "sent";
+            }
+          } catch (resendErr) {
+            console.error("Excepción al conectar con Resend:", resendErr);
+            notificationResults.resend = `exception: ${resendErr.message}`;
+          }
+        })()
       );
+    } else {
+      console.warn("RESEND_API_KEY no encontrada en las variables de entorno de Cloudflare.");
     }
 
     // 4.C Notificación vía Cloudflare Email Routing binding (si está vinculado send_email)
     if (env.SEND_EMAIL) {
+      notificationResults.cloudflare_email = "pending";
       try {
         const { EmailMessage } = await import("cloudflare:email");
         const rawMime = [
@@ -177,13 +221,12 @@ async function handleRegister(request, env) {
           `Subject: =?UTF-8?B?${btoa(unescape(encodeURIComponent(`[Minka Lab] Nuevo Registro: ${nombre}`)))}?=`,
           `Content-Type: text/plain; charset=UTF-8`,
           ``,
-          `Nuevo Registro en Minka Lab (Súmate / Voluntariado):`,
+          `Nuevo Registro en Minka Lab:`,
           `• Nombre: ${nombre}`,
           `• Contacto: ${contacto}`,
           `• Ubicación: ${ubicacion || 'No especificada'}`,
-          `• Rol de Interés: ${rol}`,
+          `• Rol: ${rol}`,
           `• Fecha: ${new Date().toLocaleString('es-BO', { timeZone: 'America/La_Paz' })}`,
-          `• Guardado en D1: ${dbSuccess ? "Sí" : "No"}`,
         ].join('\r\n');
 
         const message = new EmailMessage(
@@ -192,13 +235,19 @@ async function handleRegister(request, env) {
           rawMime
         );
         notificationPromises.push(
-          env.SEND_EMAIL.send(message).catch((e) => console.error("Error en env.SEND_EMAIL:", e))
+          env.SEND_EMAIL.send(message)
+            .then(() => { notificationResults.cloudflare_email = "sent"; })
+            .catch((e) => {
+              console.error("Error en env.SEND_EMAIL:", e);
+              notificationResults.cloudflare_email = `error: ${e.message}`;
+            })
         );
       } catch (emailErr) {
-        console.warn("No se pudo enviar con cloudflare:email:", emailErr);
+        console.warn("No se pudo usar cloudflare:email:", emailErr);
       }
     }
 
+    // Esperar a que terminen todas las llamadas a las APIs de notificación
     await Promise.allSettled(notificationPromises);
 
     return new Response(
@@ -206,6 +255,7 @@ async function handleRegister(request, env) {
         success: true,
         message: "¡Registro recibido con éxito!",
         saved: dbSuccess,
+        notifications: notificationResults,
       }),
       {
         status: 200,
