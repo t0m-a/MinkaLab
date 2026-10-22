@@ -350,6 +350,15 @@ footer {
   color: var(--color-secondary);
 }
 
+.footer-col p a {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+
+.footer-col p a:hover {
+  color: var(--color-accent);
+}
+
 .footer-bottom {
   max-width: var(--max-width);
   margin: 1.5rem auto 0;
