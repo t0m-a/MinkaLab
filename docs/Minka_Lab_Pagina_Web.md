@@ -98,7 +98,7 @@ Para que la tecnología sea realmente accesible en el municipio de La Paz y sus 
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-|                  DESPLIEGUE TERRITORIAL: "TENTÁCULOS URBANOS"           |
+|                          DESPLIEGUE TERRITORIAL                         |
 ├─────────────────────────────────────────────────────────────────────────┤
 |  • Calacoto / Max Paredes / San Pedro / Periférica:                     |
 |    Clínicas móviles BYOD en Casas Distritales e Institutos Técnicos     |
@@ -112,7 +112,7 @@ Para que la tecnología sea realmente accesible en el municipio de La Paz y sus 
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-### **1. Descentralización Barrial ("Tentáculos Urbanos"):**
+### **1. Descentralización Barrial:**
 * La geografía de La Paz y las distancias entre la Zona Sur (Calacoto), el centro y las laderas dificultan la centralización en un solo espacio físico. 
 * Minka Lab implementa **Clínicas Móviles POP-UP** que se despliegan directamente en las **Casas Distritales**, Subalcaldías (Calacoto/Zona Sur, Max Paredes, San Pedro, Periférica) y facultades de la Universidad Mayor de San Andrés (UMSA).
 * Esta modalidad acerca la formación a los barrios, permitiendo auditar dispositivos y aprender en el propio entorno del participante.

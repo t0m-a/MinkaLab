@@ -64,7 +64,7 @@ El laboratorio estructura sus actividades comunitarias en cuatro ejes complement
 
 ---
 
-## 🗺️ Estrategia Territorial: "Tentáculos Urbanos"
+## 🗺️ Estrategia Territorial
 
 Para responder a la topografía y diversidad socioeconómica de **La Paz y El Alto**, Minka Lab descentraliza su presencia a través de **Clínicas Móviles Pop-Up**:
 
