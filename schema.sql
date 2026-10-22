@@ -2,7 +2,7 @@
 -- MINKA LAB INITIATIVE — ESQUEMA DE BASE DE DATOS CLOUDFLARE D1
 -- =====================================================================
 
--- Tabla para almacenar registros del formulario "Súmate / Voluntariado"
+-- 1. Tabla para almacenar registros del formulario "Súmate / Voluntariado"
 CREATE TABLE IF NOT EXISTS registros (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -18,3 +18,10 @@ CREATE TABLE IF NOT EXISTS registros (
 -- Índices para búsquedas y ordenamientos eficientes
 CREATE INDEX IF NOT EXISTS idx_registros_created_at ON registros(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_registros_status ON registros(status);
+
+-- 2. Tabla para almacenar configuraciones y claves de API de forma segura y privada en D1
+CREATE TABLE IF NOT EXISTS config (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

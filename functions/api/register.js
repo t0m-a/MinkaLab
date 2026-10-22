@@ -60,7 +60,41 @@ export async function onRequestPost({ request, env }) {
       console.warn("env.DB no está vinculado en Cloudflare.");
     }
 
-    // 4. Diagnóstico y despacho de Notificaciones
+    // 4. Resolver credenciales (desde env de Cloudflare o desde la tabla config en D1)
+    let resendApiKey = env.RESEND_API_KEY ? env.RESEND_API_KEY.trim() : null;
+    let telegramToken = env.TELEGRAM_BOT_TOKEN ? env.TELEGRAM_BOT_TOKEN.trim() : null;
+    let telegramChatId = env.TELEGRAM_CHAT_ID ? env.TELEGRAM_CHAT_ID.trim() : null;
+
+    let resendSource = env.RESEND_API_KEY ? "env" : "none";
+    let telegramSource = (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) ? "env" : "none";
+
+    // Fallback: Si no están en env, consultamos la tabla 'config' en D1
+    if (env.DB && (!resendApiKey || !telegramToken || !telegramChatId)) {
+      try {
+        const configRows = await env.DB.prepare(
+          "SELECT key, value FROM config WHERE key IN ('RESEND_API_KEY', 'TELEGRAM_BOT_TOKEN', 'TELEGRAM_CHAT_ID')"
+        ).all();
+        if (configRows && configRows.results) {
+          for (const row of configRows.results) {
+            if (row.key === "RESEND_API_KEY" && !resendApiKey && row.value) {
+              resendApiKey = row.value.trim();
+              resendSource = "d1";
+            }
+            if (row.key === "TELEGRAM_BOT_TOKEN" && !telegramToken && row.value) {
+              telegramToken = row.value.trim();
+              telegramSource = "d1";
+            }
+            if (row.key === "TELEGRAM_CHAT_ID" && !telegramChatId && row.value) {
+              telegramChatId = row.value.trim();
+            }
+          }
+        }
+      } catch (cfgErr) {
+        // La tabla config no existe todavía o falló la consulta
+      }
+    }
+
+    // 5. Diagnóstico y despacho de Notificaciones
     const notificationResults = {
       telegram: "not_configured",
       resend: "not_configured",
@@ -69,9 +103,9 @@ export async function onRequestPost({ request, env }) {
 
     const notificationPromises = [];
 
-    // 4.A Telegram Bot
-    if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {
-      notificationResults.telegram = "pending";
+    // 5.A Telegram Bot
+    if (telegramToken && telegramChatId) {
+      notificationResults.telegram = `pending (${telegramSource})`;
       const telegramText =
         `🤝 *Nuevo Registro en Minka Lab*\n\n` +
         `👤 *Nombre:* ${escapeTelegramMarkdown(nombre)}\n` +
@@ -84,13 +118,11 @@ export async function onRequestPost({ request, env }) {
       notificationPromises.push(
         (async () => {
           try {
-            const token = env.TELEGRAM_BOT_TOKEN.trim();
-            const chatId = env.TELEGRAM_CHAT_ID.trim();
-            const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            const res = await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                chat_id: chatId,
+                chat_id: telegramChatId,
                 text: telegramText,
                 parse_mode: "Markdown",
               }),
@@ -111,10 +143,9 @@ export async function onRequestPost({ request, env }) {
       );
     }
 
-    // 4.B Notificación vía Resend API
-    if (env.RESEND_API_KEY) {
-      notificationResults.resend = "pending";
-      const apiKey = env.RESEND_API_KEY.trim();
+    // 5.B Notificación vía Resend API
+    if (resendApiKey) {
+      notificationResults.resend = `pending (${resendSource})`;
       const fromAddress = env.FROM_EMAIL ? env.FROM_EMAIL.trim() : "Minka Lab <notificaciones@minkalab.net>";
       const toAddress = env.NOTIFY_EMAIL ? env.NOTIFY_EMAIL.trim() : "contact@minkalab.net";
 
@@ -144,7 +175,7 @@ export async function onRequestPost({ request, env }) {
             const res = await fetch("https://api.resend.com/emails", {
               method: "POST",
               headers: {
-                Authorization: `Bearer ${apiKey}`,
+                Authorization: `Bearer ${resendApiKey}`,
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
@@ -169,10 +200,10 @@ export async function onRequestPost({ request, env }) {
         })()
       );
     } else {
-      console.warn("RESEND_API_KEY no encontrada en las variables de entorno de Cloudflare.");
+      console.warn("RESEND_API_KEY no encontrada en env ni en tabla D1 config.");
     }
 
-    // 4.C Notificación vía Cloudflare Email Routing binding (si está vinculado send_email)
+    // 5.C Notificación vía Cloudflare Email Routing binding (si está vinculado send_email)
     if (env.SEND_EMAIL) {
       notificationResults.cloudflare_email = "pending";
       try {
@@ -209,7 +240,16 @@ export async function onRequestPost({ request, env }) {
       }
     }
 
+    // Esperar a que terminen todas las llamadas a las APIs de notificación
     await Promise.allSettled(notificationPromises);
+
+    const detectedKeys = Object.keys(env).filter((k) => k !== "ASSETS");
+    if (resendApiKey && !detectedKeys.includes("RESEND_API_KEY")) {
+      detectedKeys.push("RESEND_API_KEY (via D1)");
+    }
+    if (telegramToken && !detectedKeys.includes("TELEGRAM_BOT_TOKEN")) {
+      detectedKeys.push("TELEGRAM_BOT_TOKEN (via D1)");
+    }
 
     return new Response(
       JSON.stringify({
@@ -217,7 +257,7 @@ export async function onRequestPost({ request, env }) {
         message: "¡Registro recibido con éxito!",
         saved: dbSuccess,
         notifications: notificationResults,
-        detected_env_keys: Object.keys(env).filter((k) => k !== "ASSETS"),
+        detected_env_keys: detectedKeys,
       }),
       {
         status: 200,
