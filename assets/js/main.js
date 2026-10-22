@@ -25,4 +25,81 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // Formulario de Registro (Súmate / Voluntariado)
+  const registroForm = document.getElementById('registro-form');
+  if (registroForm) {
+    const statusBox = document.getElementById('form-status');
+    const submitBtn = document.getElementById('submit-btn');
+
+    registroForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nombre = document.getElementById('nombre').value.trim();
+      const contacto = document.getElementById('contacto').value.trim();
+      const ubicacion = document.getElementById('ubicacion').value.trim();
+      const rol = document.getElementById('rol').value;
+      const trap = document.getElementById('website_url_trap')?.value;
+
+      // Validación básica en cliente
+      if (!nombre || !contacto) {
+        if (statusBox) {
+          statusBox.innerHTML = '<div class="alert alert-error">Por favor completa los campos requeridos (Nombre completo y Correo o WhatsApp).</div>';
+        }
+        return;
+      }
+
+      // Estado de carga en la UI
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando registro...';
+      }
+      if (statusBox) statusBox.innerHTML = '';
+
+      try {
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            nombre,
+            contacto,
+            ubicacion,
+            rol,
+            website_url_trap: trap,
+          }),
+        });
+
+        const result = await response.json().catch(() => ({}));
+
+        if (response.ok && result.success) {
+          if (statusBox) {
+            statusBox.innerHTML =
+              '<div class="alert alert-success">' +
+              '<strong>¡Gracias por sumarte a Minka Lab!</strong><br>' +
+              'Tu registro ha sido recibido y almacenado exitosamente. Nos pondremos en contacto contigo a la brevedad vía correo o WhatsApp.' +
+              '</div>';
+          }
+          registroForm.reset();
+        } else {
+          throw new Error(result.error || 'Ocurrió un error al procesar tu registro en el servidor.');
+        }
+      } catch (err) {
+        if (statusBox) {
+          statusBox.innerHTML =
+            '<div class="alert alert-error">' +
+            '<strong>No se pudo enviar el registro:</strong> ' +
+            (err.message || 'Error de conexión.') +
+            '<br>Por favor intenta nuevamente en unos momentos o escríbenos a <a href="mailto:contact@minkalab.net">contact@minkalab.net</a>.' +
+            '</div>';
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Enviar Registro';
+        }
+      }
+    });
+  }
 });

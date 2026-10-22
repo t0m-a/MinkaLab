@@ -49,29 +49,36 @@
 
       <div class="card">
         <h3>Formulario de Registro</h3>
-        <form onsubmit="event.preventDefault(); alert('¡Gracias por sumarte a Minka Lab! Nos pondremos en contacto pronto.');">
+        <div id="form-status" aria-live="polite"></div>
+        <form id="registro-form" novalidate>
+          <!-- Honeypot anti-spam (invisible para visitantes, trampa para bots) -->
+          <div style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;" aria-hidden="true">
+            <label for="website_url_trap">Deja este campo vacío</label>
+            <input type="text" id="website_url_trap" name="website_url_trap" tabindex="-1" autocomplete="off">
+          </div>
+
           <div class="form-group">
-            <label for="nombre">Nombre completo:</label>
-            <input type="text" id="nombre" class="form-control" placeholder="Tu nombre" required>
+            <label for="nombre">Nombre completo: <span style="color: var(--color-primary);">*</span></label>
+            <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Tu nombre" required>
           </div>
           <div class="form-group">
-            <label for="contacto">Correo o WhatsApp:</label>
-            <input type="text" id="contacto" class="form-control" placeholder="Ej. +591 70000000" required>
+            <label for="contacto">Correo o WhatsApp: <span style="color: var(--color-primary);">*</span></label>
+            <input type="text" id="contacto" name="contacto" class="form-control" placeholder="Ej. correo@ejemplo.com o +591 70000000" required>
           </div>
           <div class="form-group">
             <label for="ubicacion">Zona / Municipio:</label>
-            <input type="text" id="ubicacion" class="form-control" placeholder="Ej. Calacoto, San Pedro, El Alto">
+            <input type="text" id="ubicacion" name="ubicacion" class="form-control" placeholder="Ej. Calacoto, San Pedro, Sopocachi, El Alto">
           </div>
           <div class="form-group">
             <label for="rol">¿Cómo te gustaría colaborar?:</label>
-            <select id="rol" class="form-control">
-              <option>Quiero participar en los talleres (Aprendiz)</option>
-              <option>Quiero ser voluntario/a / mentor/a</option>
-              <option>Represento a un barrio u organización</option>
-              <option>Quiero donar equipamiento</option>
+            <select id="rol" name="rol" class="form-control">
+              <option value="Quiero participar en los talleres (Aprendiz)">Quiero participar en los talleres (Aprendiz)</option>
+              <option value="Quiero ser voluntario/a / mentor/a">Quiero ser voluntario/a / mentor/a</option>
+              <option value="Represento a un barrio u organización">Represento a un barrio u organización</option>
+              <option value="Quiero donar equipamiento">Quiero donar equipamiento</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary" style="width: 100%;">Enviar Registro</button>
+          <button type="submit" id="submit-btn" class="btn btn-primary" style="width: 100%;">Enviar Registro</button>
         </form>
       </div>
     </div>
