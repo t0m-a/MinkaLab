@@ -83,9 +83,15 @@ MinkaLab/
 │   ├── css/
 │   │   └── styles.css          # Estilos globales, diseño responsive y temas de color
 │   └── js/
-│       └── main.js             # Lógica de navegación móvil y desplazamiento suave
+│       └── main.js             # Lógica de navegación móvil y formulario de registro
 ├── docs/
 │   └── Minka_Lab_Pagina_Web.md # Documento base de contenido, filosofía y arquitectura
+├── apple-touch-icon.png        # Icono táctil para dispositivos Apple iOS
+├── favicon-96x96.png           # Favicon en formato PNG de alta resolución
+├── favicon.ico                 # Favicon clásico multiresolución
+├── favicon.svg                 # Favicon vectorial escalable
+├── site.webmanifest            # Manifiesto de aplicación web (PWA)
+├── web-app-manifest-*.png      # Iconos 192x192 y 512x512 para instalación PWA
 ├── estrategia.html             # Página: Despliegue barrial y estrategia en La Paz y El Alto
 ├── index.html                  # Página Principal: Hero, visión, pilares y llamados a la acción
 ├── investigacion.html          # Página: Humanismo digital, neurodiversidad y salud digital
