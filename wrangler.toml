@@ -11,3 +11,7 @@ binding = "ASSETS"
 binding = "DB"
 database_name = "minkalab-db"
 database_id = "a05bd725-51a4-4c5a-81f6-400e6beb9182"
+
+[vars]
+FROM_EMAIL = "Minka Lab <notificaciones@minkalab.net>"
+NOTIFY_EMAIL = "contact@minkalab.net"

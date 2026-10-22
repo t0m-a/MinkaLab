@@ -217,6 +217,7 @@ export async function onRequestPost({ request, env }) {
         message: "¡Registro recibido con éxito!",
         saved: dbSuccess,
         notifications: notificationResults,
+        detected_env_keys: Object.keys(env).filter((k) => k !== "ASSETS"),
       }),
       {
         status: 200,
