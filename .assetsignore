@@ -1,0 +1,10 @@
+.git/
+functions/
+_worker.js
+schema.sql
+wrangler.toml
+wrangler.example.toml
+.assetsignore
+README.md
+docs/
+LICENSE
