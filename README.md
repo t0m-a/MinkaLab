@@ -7,7 +7,7 @@
 [![Tipo](https://img.shields.io/badge/Tipo-Sin%20Fines%20de%20Lucro%20%2F%20Non--Profit-blue.svg)](#-sobre-el-proyecto)
 [![Ubicación](https://img.shields.io/badge/Ubicación-La%20Paz%20%7C%20El%20Alto%2C%20Bolivia-red.svg)](#-estrategia-territorial)
 [![Idioma](https://img.shields.io/badge/Idioma-Español%20%28Spanish%29-yellow.svg)](#)
-[![Despliegue](https://img.shields.io/badge/Despliegue-Cloudflare%20Pages%20%26%20Workers-F38020?logo=cloudflare&logoColor=white)](#-despliegue-y-automatización-cloudflare)
+[![Despliegue](https://img.shields.io/badge/Despliegue-Cloudflare%20Pages%20%26%20Workers-F38020?logo=cloudflare&logoColor=white)](#-despliegue-y-arquitectura-cloudflare)
 [![Licencia](https://img.shields.io/badge/Licencia-GPL--3.0-green.svg)](LICENSE)
 
 ---
@@ -16,7 +16,7 @@
 
 **Minka Lab** es un sitio web y proyecto comunitario **sin fines de lucro** (*non-profit*), con base operativa en **La Paz y El Alto, Bolivia**. La plataforma y todos sus recursos están desarrollados íntegramente en **idioma español**.
 
-El proyecto se encuentra actualmente **en desarrollo activo** (*being worked on now*), con despliegue y publicación continua y automatizada a través de **Cloudflare Pages** y **Cloudflare Pages Workers** (*automated CI/CD pipeline*).
+El proyecto se encuentra actualmente **en desarrollo activo** (*being worked on now*), con despliegue y publicación continua y automatizada a través de **Cloudflare Pages**, **Workers** y bases de datos **Cloudflare D1** (*automated CI/CD pipeline*).
 
 ---
 
@@ -57,7 +57,7 @@ El laboratorio estructura sus actividades comunitarias en cuatro ejes complement
    Clínicas prácticas bajo la modalidad *"Hazlo tú mismo"* (DIY) y *"Trae tu propio dispositivo"* (BYOD). Formación en herramientas prácticas de Inteligencia Artificial para la empleabilidad, inglés técnico para lectura de documentación y repositorios globales, y remozado/reparación de hardware para combatir la obsolescencia programada.
 
 3. **Pilar III — Domótica Accesible e Inclusión Social:**  
-   En alianza estratégica con la **Red de Vida Independiente Bolivia (REVIBO)** y la **Asociación VIVIR**, desarrollamos sistemas de automatización hogareña de bajo costo y hardware abierto (control por voz, sensores e interfaces adaptadas) para potenciar la autonomía física de personas con discapacidad motriz.
+   Desarrollo de sistemas de automatización hogareña de bajo costo y hardware abierto (control por voz, sensores e interfaces adaptadas) para potenciar la autonomía física de personas con discapacidad motriz. Proyecto orientado a la articulación participativa con colectivos de vida independiente.
 
 4. **Pilar IV — Investigación Interdisciplinaria & Humanismo Digital:**  
    Espacio crítico de investigación sobre la relación entre tecnología, neurociencia y sociedad. Aborda el diseño de interfaces y métodos para personas dentro del Trastorno del Espectro Autista (TEA), estrategias de desintoxicación y salud digital para prevenir el *burnout*, y métricas de valor humano que trasciendan la productividad económica puramente extractiva.
@@ -73,9 +73,21 @@ Para responder a la topografía y diversidad socioeconómica de **La Paz y El Al
 
 ---
 
+## 🤝 Alianzas y Articulación en Curso
+
+Actualmente nos encontramos en **proceso activo de desarrollo de relaciones y nuevas alianzas colaborativas**. Al ser un proyecto en crecimiento, **no contamos aún con convenios o socios oficiales formalizados**, pero estamos activamente interesados y trabajando para establecer colaboraciones con:
+
+* **Organizaciones barriales y vecinales:** Para coordinar talleres y clínicas móviles en sedes comunitarias y distritales.
+* **Colectivos de vida independiente e inclusión:** Para el codiseño de soluciones de domótica abierta y accesibilidad.
+* **Centros educativos e institutos técnicos:** Para programas de alfabetización digital ética, IA aplicada y reacondicionamiento de hardware.
+
+> ¿Representas a una organización o colectivo? Puedes ponerte en contacto a través de nuestra sección de [Súmate / Voluntariado](https://minkalab.net/sumate.html) o escribiéndonos a `contact@minkalab.net`.
+
+---
+
 ## 🗂️ Estructura del Repositorio
 
-El sitio web está construido con tecnologías web nativas (HTML5 semántico, CSS3 moderno con variables y Vanilla JavaScript), priorizando un rendimiento ultra liviano, accesibilidad y máxima compatibilidad:
+El sitio web está construido con tecnologías web nativas (HTML5 semántico, CSS3 moderno con variables y Vanilla JavaScript), complementado con infraestructura serverless perimetral en Cloudflare:
 
 ```plaintext
 MinkaLab/
@@ -83,14 +95,20 @@ MinkaLab/
 │   ├── css/
 │   │   └── styles.css          # Estilos globales, diseño responsive y temas de color
 │   └── js/
-│       └── main.js             # Lógica de navegación móvil y formulario de registro
+│       └── main.js             # Lógica de navegación móvil y formulario interactivo
 ├── docs/
 │   └── Minka_Lab_Pagina_Web.md # Documento base de contenido, filosofía y arquitectura
-├── apple-touch-icon.png        # Icono táctil para dispositivos Apple iOS
+├── functions/
+│   └── api/
+│       └── register.js         # Endpoint serverless de registro (Cloudflare Pages Functions)
+├── _worker.js                  # Router perimetral y procesamiento de registros en Cloudflare
+├── schema.sql                  # Definición y esquemas SQL para base de datos Cloudflare D1
+├── wrangler.toml               # Configuración de despliegue, variables y enlaces D1 en Cloudflare
+├── site.webmanifest            # Manifiesto de aplicación web instalable (PWA)
+├── apple-touch-icon.png        # Icono táctil para dispositivos Apple iOS (180x180)
 ├── favicon-96x96.png           # Favicon en formato PNG de alta resolución
 ├── favicon.ico                 # Favicon clásico multiresolución
 ├── favicon.svg                 # Favicon vectorial escalable
-├── site.webmanifest            # Manifiesto de aplicación web (PWA)
 ├── web-app-manifest-*.png      # Iconos 192x192 y 512x512 para instalación PWA
 ├── estrategia.html             # Página: Despliegue barrial y estrategia en La Paz y El Alto
 ├── index.html                  # Página Principal: Hero, visión, pilares y llamados a la acción
@@ -104,13 +122,14 @@ MinkaLab/
 
 ---
 
-## ☁️ Despliegue y Automatización (Cloudflare)
+## ☁️ Despliegue y Arquitectura Cloudflare
 
-El sitio web se publica y aloja en la red global de **Cloudflare**, garantizando máxima velocidad, disponibilidad y seguridad:
+El sitio web se publica y ejecuta en la red perimetral de **Cloudflare**, garantizando máxima velocidad, disponibilidad y seguridad:
 
-* **Cloudflare Pages:** Aloja los activos estáticos y páginas del sitio web con distribución perimetral inmediata (*edge network*).
-* **Cloudflare Pages Workers:** Administra el enrutamiento inteligente, cabeceras de seguridad, optimización en el borde y funciones serverless auxiliares.
-* **Automatización CI/CD:** El flujo de publicación está completamente automatizado. Cada cambio integrado en la rama principal (`main`) activa automáticamente el pipeline de compilación y despliegue hacia Cloudflare, garantizando sincronización continua sin intervención manual.
+* **Cloudflare Pages & Workers:** Aloja los activos estáticos y ejecuta el router en el borde (`_worker.js`) para manejar rutas API y assets con ultra baja latencia.
+* **Cloudflare D1 SQL Database:** Almacena de forma persistente y segura las postulaciones de voluntarios, aprendices y organizaciones (`minkalab-db`).
+* **Canales de Notificación Automatizada:** Integración para despacho automático de alertas ante nuevos registros mediante **Resend Email API** y bots de **Telegram**.
+* **Automatización CI/CD:** El flujo de publicación está completamente automatizado vía Git. Cada cambio integrado en la rama principal (`main`) activa automáticamente el pipeline de compilación y despliegue continuo en Cloudflare.
 
 ---
 
@@ -147,11 +166,18 @@ Para explorar o contribuir localmente al sitio web:
 > [!NOTE]  
 > Este proyecto se encuentra actualmente **en desarrollo activo**. Se están incorporando nuevos módulos, fichas de talleres, calendario de clínicas barriales y material educativo interactivo.
 
+### Hitos Completados
+- [x] Arquitectura base, diseño responsivo accesible (WCAG AAA) e identidad visual andina.
+- [x] Formulario interactivo de registro de voluntariado y alianzas con validación y protección anti-spam honeypot.
+- [x] Persistencia en base de datos perimetral Cloudflare D1 (`registros` y `config`).
+- [x] Canal de alertas multicanal para notificaciones de registro (Resend Email y Telegram).
+- [x] Iconografía completa multiplataforma: Favicons SVG/ICO/PNG, Apple Touch Icon y Progressive Web App (PWA).
+
 ### Próximos Pasos (Roadmap)
 - [ ] Catálogo interactivo de clínicas y fechas en Casas Distritales.
 - [ ] Guías descargables y hojas de ruta para el pilar de Higiene Digital.
-- [ ] Repositorio de esquemáticos y código abierto para prototipos de domótica accesible con REVIBO.
-- [ ] Formulario integrado de registro de voluntariado y donación de equipos.
+- [ ] Repositorio de esquemáticos y código abierto para prototipos de domótica accesible e inclusión motriz.
+- [ ] Módulo administrativo ligero para seguimiento de postulaciones de voluntarios.
 
 ---
 
@@ -161,7 +187,7 @@ La construcción comunitaria de la tecnología requiere de todas y todos. Existe
 
 1. **Como Aprendiz:** Participa en nuestras clínicas gratuitas de higiene digital, IA y robótica accesible.
 2. **Como Voluntario/a o Mentor/a:** Comparte tus conocimientos técnicos, sociales o pedagógicos bajo la premisa *"Forma a las personas que vas a necesitar"*.
-3. **Como Organización o Colectivo:** Articulemos talleres en tu zona barrial, escuela, centro social o universidad.
+3. **Como Organización o Colectivo:** Desarrollemos alianzas para llevar talleres a tu zona barrial, escuela, centro social o universidad.
 4. **Donación de Equipos:** Aporta dispositivos en desuso para ser reparados y adaptados en nuestras clínicas DIY.
 
 ---

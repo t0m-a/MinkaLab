@@ -77,7 +77,7 @@ El trabajo operativo del laboratorio se estructura en cuatro pilares complementa
   * **Reutilización y Reparación:** Remozado de equipos para alargar su vida útil y combatir la obsolescencia programada.
 
 ### **Pilar III: Reinserción Social, Accesibilidad y Domótica**
-* **Alianzas Estratégicas:** Trabajo conjunto con la **Red de Vida Independiente Bolivia (REVIBO)** y la **Asociación VIVIR**.
+* **Articulación en Curso:** En proceso de desarrollo y articulación colaborativa con colectivos y organizaciones de vida independiente.
 * **Propósito:** Poner la automatización y el hardware abierto al servicio de la vida independiente y el trabajo incluyente.
 * **Aplicaciones Prácticas:**
   * **Entornos Inteligentes Accesibles:** Sistemas de iluminación activados por voz, control de accesos automatizado para puertas y sensores ambientales adaptados a las necesidades particulares de personas con discapacidad motriz.
