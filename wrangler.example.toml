@@ -9,7 +9,7 @@ compatibility_date = "2024-01-01"
 [[d1_databases]]
 binding = "DB"                                   # Nombre exacto del binding utilizado en el código
 database_name = "minkalab-db"                    # Nombre que le des a la base de datos en Cloudflare
-database_id = "TU_DATABASE_ID_AQUI"             # Reemplazar con el ID que genera Cloudflare
+database_id = "a05bd725-51a4-4c5a-81f6-400e6beb9182"             # Reemplazar con el ID que genera Cloudflare
 
 # Variables de entorno opcionales (puedes definirlas aquí o en el Dashboard de Cloudflare Pages):
 # [vars]
