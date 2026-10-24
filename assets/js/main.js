@@ -24,6 +24,27 @@ document.addEventListener('DOMContentLoaded', () => {
     handleScroll();
   }
 
+  // Scroll reveal animations for sections, cards, and content blocks
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const revealTargets = document.querySelectorAll('.card, .section-title, .quote-box, .diagram-box, .hero-inner, .grid-2 > div, .grid-4 > div');
+    
+    revealTargets.forEach(el => el.classList.add('reveal-on-scroll'));
+
+    const revealObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.1
+    });
+
+    revealTargets.forEach(el => revealObserver.observe(el));
+  }
+
   // Smooth Scroll for anchor links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
