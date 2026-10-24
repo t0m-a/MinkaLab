@@ -76,9 +76,9 @@ header {
               border-color 0.35s ease;
 }
 
-/* Estado al desplazarse y superponerse al cuerpo: 60% de transparencia con alto contraste */
+/* Estado al desplazarse y superponerse al cuerpo: 50% de transparencia con alto contraste */
 header.scrolled {
-  background-color: rgba(255, 255, 255, 0.60);
+  background-color: rgba(255, 255, 255, 0.50);
   backdrop-filter: blur(20px) saturate(190%);
   -webkit-backdrop-filter: blur(20px) saturate(190%);
   border-bottom-color: rgba(250, 182, 72, 0.85);
