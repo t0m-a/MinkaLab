@@ -34,7 +34,7 @@ Inspirados en la tradición andina de la **Minka** (trabajo colectivo y solidari
 
 ---
 
-## 🏛️ Los Cuatro Pilares Operativos
+## 🏛️ Nuestros Talleres (Ejes Operativos)
 
 El laboratorio estructura sus actividades comunitarias en cuatro ejes complementarios:
 
@@ -68,7 +68,7 @@ El laboratorio estructura sus actividades comunitarias en cuatro ejes complement
 
 Para responder a la topografía y diversidad socioeconómica de **La Paz y El Alto**, Minka Lab descentraliza su presencia a través de **Clínicas Móviles Pop-Up**:
 
-* **Despliegue Barrial:** Presencia rotativa en Casas Distritales, Subalcaldías (**Calacoto / Zona Sur, Max Paredes, San Pedro, Periférica**) y sedes en la urbe de **El Alto**, además de espacios universitarios (UMSA).
+* **Despliegue Barrial:** Presencia rotativa en Casas Distritales, Subalcaldías (**Calacoto / Zona Sur, Max Paredes, San Pedro, Periférica**) y sedes en la urbe de **El Alto**, además de universidades.
 * **Articulación Institucional Independiente:** Conexión con las metas de inclusión social y ciudad inteligente del **Plan La Paz 2050** del Gobierno Autónomo Municipal de La Paz (GAMLP), preservando en todo momento la total **autogestión comunitaria e independencia política**.
 
 ---
@@ -79,7 +79,7 @@ Actualmente nos encontramos en **proceso activo de desarrollo de relaciones y nu
 
 * **Organizaciones barriales y vecinales:** Para coordinar talleres y clínicas móviles en sedes comunitarias y distritales.
 * **Colectivos de vida independiente e inclusión:** Para el codiseño de soluciones de domótica abierta y accesibilidad.
-* **Centros educativos e institutos técnicos:** Para programas de alfabetización digital ética, IA aplicada y reacondicionamiento de hardware.
+* **Universidades, centros educativos e institutos técnicos:** Para programas de alfabetización digital ética, IA aplicada y reacondicionamiento de hardware.
 
 > ¿Representas a una organización o colectivo? Puedes ponerte en contacto a través de nuestra sección de [Súmate / Voluntariado](https://minkalab.net/sumate.html) o escribiéndonos a `contact@minkalab.net`.
 
@@ -115,7 +115,7 @@ MinkaLab/
 ├── investigacion.html          # Página: Humanismo digital, neurodiversidad y salud digital
 ├── LICENSE                     # Licencia pública GNU General Public License v3.0 (GPLv3)
 ├── manifiesto.html             # Página: Manifiesto institucional y filosofía abierta
-├── pilares.html                # Página: Detalle exhaustivo de los 4 pilares operativos
+├── talleres.html                # Página: Detalle exhaustivo de los talleres y áreas operativas
 ├── README.md                   # Documentación principal del repositorio
 └── sumate.html                 # Página: Participación ciudadana, voluntariado y alianzas
 ```

@@ -10,6 +10,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Header transparency & blur effect on scroll
+  const header = document.querySelector('header');
+  if (header) {
+    const handleScroll = () => {
+      if (window.scrollY > 15) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+  }
+
   // Smooth Scroll for anchor links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {

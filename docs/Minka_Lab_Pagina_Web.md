@@ -29,7 +29,7 @@ En Minka Lab entendemos la tecnología no como un fin en sí mismo ni como un lu
 
 ---
 
-## 3. Manifiesto y Filosofía: "Nuestras Fuerzas"
+## 3. Manifiesto y Filosofía
 
 > *"Vemos las tecnologías como herramientas al servicio de la población y de sus valores más profundos."*
 
@@ -44,7 +44,7 @@ Frente a un entorno digital cada vez más centralizado y extractivo, Minka Lab s
 
 ---
 
-## 4. Pilares Operativos de Minka Lab
+## 4. Nuestros Talleres
 
 El trabajo operativo del laboratorio se estructura en cuatro pilares complementarios:
 
@@ -96,25 +96,9 @@ El trabajo operativo del laboratorio se estructura en cuatro pilares complementa
 
 Para que la tecnología sea realmente accesible en el municipio de La Paz y sus alrededores, Minka Lab diseña sus acciones considerando la diversidad socioeconómica y geográfica de la ciudad —conectando desde el Macrodistrito Sur hasta las laderas y la urbe alteña.
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-|                          DESPLIEGUE TERRITORIAL                         |
-├─────────────────────────────────────────────────────────────────────────┤
-|  • Calacoto / Max Paredes / San Pedro / Periférica:                     |
-|    Clínicas móviles BYOD en Casas Distritales e Institutos Técnicos     |
-|                                                                         |
-|  • Articulación con el GAMLP (Alcaldía):                                |
-|    Aporte directo a los Ejes de "Ciudad Inteligente" e "Inclusiva"      |
-|    del Plan La Paz 2050 sin perder independencia comunitaria            |
-|                                                                         |
-|  • Sinergia Metropolitana con El Alto:                                  |
-|    Puntos de acopio y auditoría digital en ferias e hitos periurbanos   |
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
 ### **1. Descentralización Barrial:**
 * La geografía de La Paz y las distancias entre la Zona Sur (Calacoto), el centro y las laderas dificultan la centralización en un solo espacio físico. 
-* Minka Lab implementa **Clínicas Móviles POP-UP** que se despliegan directamente en las **Casas Distritales**, Subalcaldías (Calacoto/Zona Sur, Max Paredes, San Pedro, Periférica) y facultades de la Universidad Mayor de San Andrés (UMSA).
+* Minka Lab implementa **Clínicas Móviles POP-UP** que se despliegan directamente en las **Casas Distritales**, Subalcaldías (Calacoto/Zona Sur, Max Paredes, San Pedro, Periférica) y universidades.
 * Esta modalidad acerca la formación a los barrios, permitiendo auditar dispositivos y aprender en el propio entorno del participante.
 
 ### **2. Navegación en el Contexto Político Municipal y Nacional:**

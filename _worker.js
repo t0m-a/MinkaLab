@@ -189,8 +189,8 @@ async function handleRegister(request, env) {
 
       const emailHtml = `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; color: #212529; background-color: #f8f9fa;">
-          <div style="background-color: #ffffff; padding: 24px; border-radius: 6px; border-left: 4px solid #C85A32; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <h2 style="color: #C85A32; margin-top: 0;">Nuevo Registro en Súmate / Voluntariado</h2>
+          <div style="background-color: #ffffff; padding: 24px; border-radius: 6px; border-left: 4px solid #fab648; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <h2 style="color: #a8650c; margin-top: 0;">Nuevo Registro en Súmate / Voluntariado</h2>
             <p>Se ha recibido una nueva solicitud a través del sitio web:</p>
             <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
               <tr style="border-bottom: 1px solid #e9ecef;"><td style="padding: 10px 0; font-weight: 600; width: 140px;">Nombre:</td><td>${escapeHtml(nombre)}</td></tr>
@@ -200,7 +200,7 @@ async function handleRegister(request, env) {
               <tr><td style="padding: 10px 0; font-weight: 600;">Guardado en D1:</td><td>${dbSuccess ? "✅ Exitoso" : "⚠️ Error / No configurado"}</td></tr>
             </table>
             <div style="margin-top: 24px; font-size: 0.85rem; color: #6c757d; border-top: 1px solid #e9ecef; padding-top: 12px;">
-              Minka Lab Initiative &bull; <a href="https://minkalab.net" style="color: #00A896;">minkalab.net</a>
+              Minka Lab Initiative &bull; <a href="https://minkalab.net" style="color: #00767c;">minkalab.net</a>
             </div>
           </div>
         </div>
